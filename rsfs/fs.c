@@ -47,8 +47,49 @@ int fs_init() {
 
 /* cria novas estruturas na memória e as escreve no disco */
 int fs_format() {
-	printf("Função não implementada: fs_format\n");
-	return 0;
+	
+	int i;
+	char *buffer;
+
+	/* Formata a FAT */
+	for (i = 0; i < 32; i++) {
+		fat[i] = 3;
+	}
+	fat[i] = 4;
+	i++;
+	for (;i < 65536; i++) {
+		fat[i] = 1;
+	}
+
+	/* Formata o diretório */
+	for (i = 0; i < 128; i++) {
+		dir[i].used = 0;
+	}
+
+	buffer = (char*) fat;
+
+	/* Salva o FAT no buffer */
+	for (i = 0; i < 32*8; i++) {
+		if (!bl_write(i, buffer + i*512)) {
+			printf("Erro\n"); //todo
+			return 0;
+		}
+	}
+
+	buffer = (dir_entry*) dir;
+
+	/* Salva o diretório */
+	int j =0;
+	for (i = 32*8; i < 33*8; i++, j++) {
+		if (!bl_write(i, buffer + j*512)) {
+			printf("Erro\n");
+			return 0;
+		}
+	}
+
+
+	// printf("Função não implementada: fs_format\n");
+	return 1;
 }
 
 /* pega a fat e varre todos os campos marcados como 1 (livres) */
