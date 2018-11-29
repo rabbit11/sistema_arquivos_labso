@@ -47,7 +47,7 @@ int fs_init() {
 
 /* cria novas estruturas na memória e as escreve no disco */
 int fs_format() {
-	
+	//testando github
 	int i;
 	char *buffer;
 
@@ -87,8 +87,6 @@ int fs_format() {
 		}
 	}
 
-
-	// printf("Função não implementada: fs_format\n");
 	return 1;
 }
 
